@@ -1,0 +1,136 @@
+<html>
+<head>
+  <script src="https://mimicproject.com/libs/maxiInstruments.v.0.7.js"></script>
+  <script src="https://www.doc.gold.ac.uk/eavi/rapidmix/RapidLib.js"></script>
+  <link rel="stylesheet" href="css" />
+</head>
+
+<body>
+  <div class="pageContainer">
+    <div class="appContainer">
+      <div id="explorerContainer" class="explorerContainer">
+        <canvas id="canvas" width="400px" height="400px"></canvas>
+        <div class="debugUIContainer">
+          <div class="debugUIItems">
+            <div class="debugItem"><span id="mousePosition">Mouse</span></div>
+            <div class="debugItem"><span id="outputClass">Class</span></div>
+            <div class="debugItem"><span id="outputRegression">Regression</span></div>
+            <div class="debugItem"><span id="outputDelta">Delta</span></div>
+            <div class="debugItem"><span id="kSliderOutput"></span></div>
+            <div class="debugItem"><span id="HNSliderOutput"></span></div>
+          </div>
+          <div class="colourUIItems">
+            <div class="colourItem"><span>1 &nbsp;</span><input type="color" id="cC1" name="ClassColour1" value="#000000" oninput="explorer.colours[1] = this.value;"><button class="editPButton" id="pb1" onclick="saved('pb1',1)">SAVE PATCH TO CLASS</button></div>
+            <div class="colourItem"><span>2 &nbsp;</span><input type="color" id="cC2" name="ClassColour2" value="#000000" oninput="explorer.colours[2] = this.value;"><button class="editPButton" id="pb2" onclick="saved('pb2',2)">SAVE PATCH TO CLASS</button></div>
+            <div class="colourItem"><span>3 &nbsp;</span><input type="color" id="cC3" name="ClassColour3" value="#000000" oninput="explorer.colours[3] = this.value;"><button class="editPButton" id="pb3" onclick="saved('pb3',3)">SAVE PATCH TO CLASS</button></div>
+            <div class="colourItem"><span>4 &nbsp;</span><input type="color" id="cC4" name="ClassColour4" value="#000000" oninput="explorer.colours[4] = this.value;"><button class="editPButton" id="pb4" onclick="saved('pb4',4)">SAVE PATCH TO CLASS</button></div>
+            <div class="colourItem"><span>5 &nbsp;</span><input type="color" id="cC5" name="ClassColour5" value="#000000" oninput="explorer.colours[5] = this.value;"><button class="editPButton" id="pb5" onclick="saved('pb5',5)">SAVE PATCH TO CLASS</button></div>
+            <div class="colourItem"><span>6 &nbsp;</span><input type="color" id="cC6" name="ClassColour6" value="#000000" oninput="explorer.colours[6] = this.value;"><button class="editPButton" id="pb6" onclick="saved('pb6',6)">SAVE PATCH TO CLASS</button></div>
+            <div class="colourItem"><span>7 &nbsp;</span><input type="color" id="cC7" name="ClassColour7" value="#000000" oninput="explorer.colours[7] = this.value;"><button class="editPButton" id="pb7" onclick="saved('pb7',7)">SAVE PATCH TO CLASS</button></div>
+            <div class="colourItem"><span>8 &nbsp;</span><input type="color" id="cC8" name="ClassColour8" value="#000000" oninput="explorer.colours[8] = this.value;"><button class="editPButton" id="pb8" onclick="saved('pb8',8)">SAVE PATCH TO CLASS</button></div>
+            <div class="colourItem"><span>9 &nbsp;</span><input type="color" id="cC9" name="ClassColour9" value="#000000" oninput="explorer.colours[9] = this.value;"><button class="editPButton" id="pb9" onclick="saved('pb9',9)">SAVE PATCH TO CLASS</button></div>
+          </div>
+        </div>
+      </div>
+      <div id="synthContainer" class="synthContainer">
+        <div class="startButtonContainer" id="startButtonContainer">
+          <button id="startButton" onclick="start()">START</button>
+        </div>
+      </div>
+      <div id="maxiSynthsContainer" class="maxiSynthsContainer"></div>
+      <div id="MI" class="miPage">
+        <div class="miSlidersContainer">
+          <span>K Slider</span>
+          <div class="slidecontainer">
+            <input type="range" min="1" max="1" value="1" class="slider" id="kSlider">
+          </div>
+          <span>Hidden Nodes Slider</span>
+          <div class="slidecontainer">
+            <input type="range" min="1" max="100" value="50" class="slider" id="hnSlider">
+          </div>
+        </div>
+        <div class="miDataContainer">
+          <button onclick="randomData()">Random Data</button>
+          <button onclick="clearData()">Clear Data</button>
+          <button onclick="explorer.toggleDebug()">Toggle Debug</button>
+        </div>
+        <div class="miSVGContainer">
+          <span>Upload SVG</span>
+          <div class="fileContainer">
+            <input id="svgInput" type="file" name="file" style="margin: 10px 0; padding:0px; width: 100%;">
+          </div>
+          <span>SVG Resolution</span>
+          <input type="range" min="1" max="10" value="1" class="slider" id="svgSlider">
+        </div>
+      </div>
+    </div>
+    <div class="helpContainer">
+      <span style="text-align:center">
+        <h1>HOW TO USE</h1>
+      </span>
+      <li>Hold number keys 1 - 9 while moving your mouse to add classifications to black canvas area.</li>
+      <li>Click start to activate the maxiInstruments instances.</li>
+      <li>Edit the synth parameters until you create a sound you like, then save your patch to a class.</li>
+      <li>Press and hold R key while moving the mouse in your canvas to run a reggression between your data points and synth patches.</li>
+      <li>Use your keyboard to play your synth patches via the following keys.</li>
+      <img src="keyboard.svg" alt="keyboard layout guide" style="margin-left:8px">
+      <li>Use K slider to adjust the value for K within the KNN classification model.</li>
+      <li>Use Hidden Nodes slider to adjust the number of hidden nodes within the regression models.<br><br><i>*note the more data you have in your datasets the longer this takes.*</i></li>
+      <li>Use the upload SVG input to create classifcations via an SVG file <a target="_blank" href="https://thenounproject.com/">Noun Project</a> is a good resource for free SVG's or you can make your own.</li>
+    </div>
+  </div>
+</body>
+<script src="synth.js" type="text/javascript"></script>
+<script src="GUI.js" type="text/javascript"></script>
+<script src="classification-explorer.js" type="text/javascript"></script>
+<script src="explorer-interaction.js" type="text/javascript"></script>
+<script type="text/javascript">
+  //initialise arrays
+  //mySynthData is declared to the top of scope so everyone has access to it
+  window.mySynthData = [];
+  const mySynthPreset = new Array(9).fill().map(() => new Array(108).fill(0));
+  const mySynthTrainingData = [];
+  //initialise objects
+  const instruments = new MaxiInstruments();
+  const mySynth = new synth(instruments, mySynthData);
+  //called when start button pressed
+  function start() {
+    mySynth.start("maxiSynthsContainer", mySynthData);
+    document.getElementById('startButton').remove();
+    document.getElementById('startButtonContainer').remove();
+    
+    //recursively wait for maxiSynthProcessor to be added
+    //if maxiInstruments hasn't finished initialising the synth data will be empty leading to undefined errors
+    function intGUI() {
+      if (mySynthData.length != 0) {
+        addGUI("synthContainer", mySynthData);
+        GUIInteractionSetup(mySynth, mySynthData);
+      } else {
+        setTimeout(function() {
+          intGUI();
+        }, 250);
+      }
+    }
+    intGUI();
+  }
+
+  //only save synth patch if synth has initialised already
+  //add feedback that button has actually done something
+  function saved(_id, _n) {
+    if (mySynthData.length != 0) {
+      editPreset(_n);
+      let element = document.getElementById(_id);
+      element.innerHTML = "PATCH SAVED!";
+      setTimeout(function() {
+        element.innerHTML = "SAVE PATCH TO CLASS";
+      }, 2000);
+    } else {
+      let element = document.getElementById(_id);
+      element.innerHTML = "CLICK START TO BEGIN";
+      setTimeout(function() {
+        element.innerHTML = "SAVE PATCH TO CLASS";
+      }, 2000);
+    }
+  }
+</script>
+</html>
